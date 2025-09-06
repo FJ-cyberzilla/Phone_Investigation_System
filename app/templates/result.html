@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Investigation Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        .risk-low { background-color: #d4edda; }
+        .risk-medium { background-color: #fff3cd; }
+        .risk-high { background-color: #f8d7da; }
+        .insight { padding: 10px; margin: 5px 0; background: #f8f9fa; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Investigation Results for {{ phone_number }}</h1>
+        
+        <!-- Basic Phone Info -->
+        <div class="section">
+            <h2>Phone Information</h2>
+            <p><strong>Valid:</strong> {{ results.phone_info.is_valid }}</p>
+            <p><strong>Country:</strong> {{ results.phone_info.country }}</p>
+            <p><strong>Operator:</strong> {{ results.phone_info.operator }}</p>
+            <p><strong>Time Zones:</strong> {{ results.phone_info.timezones|join(', ') }}</p>
+            <p><strong>Current Time:</strong> {{ results.phone_info.current_time }}</p>
+            <p><strong>Number Type:</strong> {{ results.phone_info.number_type }}</p>
+        </div>
+        
+        <!-- AI Analysis -->
+        <div class="section risk-{{ results.ai_analysis.risk_level }}">
+            <h2>AI Analysis</h2>
+            <p><strong>Risk Level:</strong> {{ results.ai_analysis.risk_level|upper }}</p>
+            <p><strong>Entropy:</strong> {{ "%.2f"|format(results.ai_analysis.entropy) }}</p>
+            
+            <h3>Insights</h3>
+            {% if results.ai_analysis.insights %}
+                {% for insight in results.ai_analysis.insights %}
+                <div class="insight">{{ insight }}</div>
+                {% endfor %}
+            {% else %}
+                <p>No significant insights detected.</p>
+            {% endif %}
+            
+            <h3>Pattern Analysis</h3>
+            {% if results.ai_analysis.pattern_analysis %}
+                <ul>
+                {% for pattern in results.ai_analysis.pattern_analysis %}
+                    <li>{{ pattern }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No significant patterns detected.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Spam Risk -->
+        <div class="section risk-{{ results.spam_risk.risk_level|lower }}">
+            <h2>Spam Risk Assessment</h2>
+            <p><strong>Risk Score:</strong> {{ results.spam_risk.risk_score }}/100</p>
+            <p><strong>Risk Level:</strong> {{ results.spam_risk.risk_level }}</p>
+            <p>{{ results.spam_risk.description }}</p>
+            
+            {% if results.spam_risk.reasons %}
+            <h3>Reasons</h3>
+            <ul>
+                {% for reason in results.spam_risk.reasons %}
+                <li>{{ reason }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        
+        <!-- Social Media -->
+        <div class="section">
+            <h2>Social Media Presence</h2>
+            {% for platform, data in results.social_media.items() %}
+            <h3>{{ platform|title }}</h3>
+            <p><strong>Found:</strong> {{ data.found }}</p>
+            {% if data.profiles %}
+            <ul>
+                {% for profile in data.profiles %}
+                <li>{{ profile }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if data.message %}
+            <p><em>{{ data.message }}</em></p>
+            {% endif %}
+            {% endfor %}
+        </div>
+        
+        <a href="/">Back to Investigation</a>
+    </div>
+</body>
+</html>
