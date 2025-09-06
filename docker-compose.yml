@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/phone_investigation
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./logs:/app/logs
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=phone_investigation
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6-alpine
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
