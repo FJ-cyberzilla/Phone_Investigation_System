@@ -1,0 +1,16 @@
+[MASTER]
+init-hook='import sys; sys.path.append(".")'
+
+[MESSAGES CONTROL]
+disable=
+    C0111,  # missing-docstring (we have them now)
+    R0903,  # too-few-public-methods
+    W0511,  # fixme
+
+[FORMAT]
+max-line-length=127
+indent-string='    '
+
+[DESIGN]
+max-args=7
+max-attributes=10
