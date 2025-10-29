@@ -638,7 +638,7 @@ def run_investigation(phone_number):
         results_cache.set(phone_number, results)
     except Exception as e:
         masked = mask_phone_number(phone_number)
-        logger.error(f"Investigation failed for {masked}: {str(e)}")
+        logger.error(f"Investigation failed: {str(e)}")
         results_cache.set(phone_number, {"error": str(e)})
 
 if __name__ == "__main__":
