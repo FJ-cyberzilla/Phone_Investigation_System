@@ -623,13 +623,22 @@ def investigation_status():
 def investigationErr():
     return render_template("resultErr.html", phone_number=session.get('phone_number'))
 
+def mask_phone_number(phone_number):
+    """Mask phone number except for the last 2 digits."""
+    if not isinstance(phone_number, str):
+        phone_number = str(phone_number)
+    if len(phone_number) <= 2:
+        return "*" * len(phone_number)
+    return "*" * (len(phone_number) - 2) + phone_number[-2:]
+
 def run_investigation(phone_number):
     """Run all enabled investigation features"""
     try:
         results = module_manager.execute_all(phone_number)
         results_cache.set(phone_number, results)
     except Exception as e:
-        logger.error(f"Investigation failed for {phone_number}: {str(e)}")
+        masked = mask_phone_number(phone_number)
+        logger.error(f"Investigation failed for {masked}: {str(e)}")
         results_cache.set(phone_number, {"error": str(e)})
 
 if __name__ == "__main__":
