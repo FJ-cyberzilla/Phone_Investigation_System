@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
+import logging
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from app.modules import module_manager
@@ -67,4 +68,5 @@ def get_stats():
         stats = telemetry.get_stats(hours)
         return jsonify({'stats': stats})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        logging.exception("Error occurred while fetching stats")
+        return jsonify({'error': 'Internal server error'}), 500
