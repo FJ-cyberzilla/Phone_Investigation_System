@@ -56,7 +56,7 @@ def investigate():
         })
         
     except InvalidInputException as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'error': 'Invalid input'}), 400
     except Exception as e:
         return jsonify({'error': 'Internal server error'}), 500
 
