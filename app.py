@@ -1,4 +1,4 @@
-app.py (Complete):
+app.py (Complete)
 """
 Phone Investigation System - Main application module.
 
