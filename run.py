@@ -15,7 +15,7 @@ def main():
     with debug mode enabled for development purposes.
     """
     application = create_app()
-    application.run(debug=True, host='0.0.0.0', port=5000)
+    application.run(host='0.0.0.0', port=5000)
 
 
 if __name__ == '__main__':
